@@ -1,40 +1,39 @@
-import { useEffect } from 'react'
-// import anime from 'animejs'
-import { siteConfig } from '@/lib/config'
-import { loadExternalResource } from '@/lib/utils'
-
-/**
- * 鼠标跟随特效
- * @returns
- */
-const MOUSE_FOLLOW = () => {
-  const type = siteConfig('MOUSE_FOLLOW_EFFECT_TYPE')
-  const color = siteConfig('MOUSE_FOLLOW_EFFECT_COLOR')
-
-  useEffect(() => {
-    loadExternalResource('/js/mouse-follow.js', 'js').then(url => {
-      window.createMouseCanvas && window.createMouseCanvas()({ type, color })
-    })
-
-    return () => {
-      // 在组件卸载时清理资源
-      const mouseFollowElement = document.getElementById('vixcityCanvas')
-      mouseFollowElement?.parentNode?.removeChild(mouseFollowElement)
-    }
-  }, [])
-
-  return (
-    <>
-      <style global jsx>
-        {`
-          @media (max-width: 600px) {
-            #vixcityCanvas {
-              display: none;
-            }
-          }
-        `}
-      </style>
-    </>
-  )
-}
-export default MOUSE_FOLLOW
+<script>
+        document.onmousemove = function (e) {
+            // 加div节点
+            var div = document.createElement('div');
+            div.style.width = '5px';
+            div.style.height = '5px';
+            // 加img节点
+            var img = document.createElement('img');
+            // 将Img追加到div里面。
+            div.appendChild(img);
+            img.src = './1.jpg';
+            img.style.width = '5px';
+            // 给盒子设置定位，后面更改坐标位置的时候需要用
+            div.style.position = 'absolute';
+            // 追加div
+            document.body.appendChild(div);
+            // 通过事件对象获得盒子的坐标。
+            var x = e.clientX;
+            var y = e.clientY;
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+            div.style.transition = 'all 1s ease'
+ 
+            // 设置多个小方块（停几秒。让小块放大一下，向上，向左右任意移动）
+ 
+            setTimeout(function () {
+                // 设置小方块放大
+                div.style.transform = 'scale(3)';
+                // 让坐标加上一个随机数将小方块的坐标进行更改
+                div.style.left = x + Math.floor(Math.random() * (401)) - 200 + 'px';
+                div.style.top = y + Math.floor(Math.random() * (101)) - 100 + 'px';
+            }, 100);
+ 
+            setTimeout(function () {
+                document.body.removeChild(div)
+            }, 1000);
+ 
+        }
+    </script>
